@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:lotus_forms_package/src/core/core.dart';
 import 'package:lotus_forms_package/src/core_ui/core_ui.dart';
-import 'package:lotus_forms_package/src/core_ui/widgets/app_date_time_field.dart';
-import 'package:lotus_forms_package/src/core_ui/widgets/app_text_field.dart';
-import 'package:lotus_forms_package/src/core_ui/widgets/custom_checkbox.dart';
 
 class FormsRunnerWidget extends StatelessWidget {
   const FormsRunnerWidget({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
+    AppDI.init();
     return Container(
       child: ListView(
         shrinkWrap: true,
