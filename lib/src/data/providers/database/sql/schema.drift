@@ -12,3 +12,6 @@ _insertForm:
 
 _hasForms:
     SELECT EXISTS(SELECT 1 FROM [forms]);
+
+_deleteForm:
+    DELETE FROM [forms] WHERE id = :id;

@@ -1,7 +1,7 @@
 import 'package:lotus_forms_package/src/domain/models/form_model.dart';
 
-abstract class OfflineRepository {
-  Future<bool> hasForms();
+abstract interface class OfflineRepository {
+  Stream<bool> hasForms();
   Future<List<FormModel>> getForms();
-  Future<void> insertForm(FormModel form);
+  Future<void> deleteForm(int id);
 }

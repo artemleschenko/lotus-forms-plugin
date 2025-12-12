@@ -6,17 +6,17 @@ class OfflineRepositoryImpl implements OfflineRepository {
   final Database _database;
   OfflineRepositoryImpl(Database database) : _database = database;
   @override
-  Future<List<FormModel>> getForms() {
+  Future<List<FormModel>> getForms() async {
     return _database.getForms().then(FormMapper.transformToModelList);
   }
 
   @override
-  Future<bool> hasForms() {
+  Stream<bool> hasForms() {
     return _database.hasForms();
   }
-
+  
   @override
-  Future<void> insertForm(FormModel form) {
-    return _database.insertForm(FormMapper.transformToEntity(form));
+  Future<void> deleteForm(int id) {
+    return _database.deleteForm(id);
   }
 }

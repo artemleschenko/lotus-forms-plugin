@@ -35,7 +35,12 @@ class DatabaseImpl extends _$DatabaseImpl implements Database {
   }
 
   @override
-  Future<bool> hasForms() {
-    return _hasForms().getSingle();
+  Stream<bool> hasForms() {
+    return _hasForms().watchSingle();
+  }
+
+  @override
+  Future<void> deleteForm(int id) {
+    return _deleteForm(id);
   }
 }
