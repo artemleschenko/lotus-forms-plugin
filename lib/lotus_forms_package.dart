@@ -10,6 +10,7 @@ class FormsRunnerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     AppDI.init();
     return Container(
+      color: AppColors.of(context).primaryBg,
       child: ListView(
         shrinkWrap: true,
         children: [

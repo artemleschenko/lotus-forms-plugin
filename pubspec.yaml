@@ -12,6 +12,7 @@ dependencies:
   intl:
   flutter_svg: ^2.0.9
   get_it: ^7.7.0
+  dio: ^5.4.0
 
 dev_dependencies:
   flutter_test:
