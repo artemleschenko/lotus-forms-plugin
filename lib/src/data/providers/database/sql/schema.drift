@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS [forms] (
+    [id] INTEGER PRIMARY KEY AUTOINCREMENT,
+    [name] TEXT NOT NULL
+);
+
+_getForms:
+    SELECT * FROM [forms];
+
+_insertForm:
+    INSERT INTO [forms] (name) 
+    VALUES (:name);
+
+_hasForms:
+    SELECT EXISTS(SELECT 1 FROM [forms]);
