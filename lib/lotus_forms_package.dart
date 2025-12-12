@@ -16,7 +16,7 @@ class _DynamicFormsState extends State<DynamicForms> {
   @override
   void initState() {
     super.initState();
-    AppDI.init();
+    AppDI.init(token: widget.jwtToken);
   }
 
   @override
