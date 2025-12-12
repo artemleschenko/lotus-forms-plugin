@@ -1,8 +1,8 @@
 import 'package:lotus_forms_package/src/domain/domain.dart';
 
 class SynchronizeUseCase {
-  final OfflineRepository _offlineRepo; 
-  final FormRepository _remoteRepo; 
+  final OfflineRepository _offlineRepo;
+  final FormRepository _remoteRepo;
 
   SynchronizeUseCase({
     required OfflineRepository offlineRepo,
