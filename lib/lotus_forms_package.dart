@@ -1,34 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:lotus_forms_package/src/core/core.dart';
-import 'package:lotus_forms_package/src/core_ui/core_ui.dart';
+import 'src/presentation/screens/forms_screen.dart';
 
-class FormsRunnerWidget extends StatelessWidget {
-  const FormsRunnerWidget({super.key});
-  
+class DynamicForms extends StatefulWidget {
+  const DynamicForms({super.key, required this.formId, required this.jwtToken});
+
+  final String formId;
+  final String jwtToken;
+
+  @override
+  State<DynamicForms> createState() => _DynamicFormsState();
+}
+
+class _DynamicFormsState extends State<DynamicForms> {
+  @override
+  void initState() {
+    super.initState();
+    AppDI.init();
+  }
 
   @override
   Widget build(BuildContext context) {
-    AppDI.init();
-    return Container(
-      color: AppColors.of(context).primaryBg,
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          AppTextField(),
-          AppTextField(),
-          AppTextField(),
-          AppDateTimeField(
-            hint: 'hint',
-            title: 'title',
-            type: AppDateTimeFieldType.date,
-            onChanged: (time) {},
-          ),
-
-          CustomCheckbox(isActive: true, onChanged: (value) {}),
-          CustomCheckbox(isActive: false, onChanged: (value) {}),
-          SubmitButton(submitText: 'Text', isActive: true, onSubmit: () {}),
-        ],
-      ),
-    );
+    return const FormsScreen();
   }
 }

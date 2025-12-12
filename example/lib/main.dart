@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: FormsRunnerWidget(),
+          child: DynamicForms(formId: '', jwtToken: ''),
         ),
       ),
     );
