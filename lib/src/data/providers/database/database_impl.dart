@@ -31,7 +31,7 @@ class DatabaseImpl extends _$DatabaseImpl implements Database {
 
   @override
   Future<void> insertForm(FormEntity form) {
-    return _insertForm(form.name);
+    return _insertForm(form.id, form.name);
   }
 
   @override
@@ -40,7 +40,7 @@ class DatabaseImpl extends _$DatabaseImpl implements Database {
   }
 
   @override
-  Future<void> deleteForm(int id) {
+  Future<void> deleteForm(String id) {
     return _deleteForm(id);
   }
 }

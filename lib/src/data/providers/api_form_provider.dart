@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
-
-import '../../domain/domain.dart';
+import 'package:lotus_forms_package/src/data/data.dart';
 import 'form_provider.dart';
 import '../../core/core.dart';
 

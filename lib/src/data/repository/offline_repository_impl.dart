@@ -14,9 +14,9 @@ class OfflineRepositoryImpl implements OfflineRepository {
   Stream<bool> hasForms() {
     return _database.hasForms();
   }
-  
+
   @override
-  Future<void> deleteForm(int id) {
+  Future<void> deleteForm(String id) {
     return _database.deleteForm(id);
   }
 }

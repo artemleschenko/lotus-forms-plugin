@@ -14,7 +14,7 @@ class FormCubit extends Cubit<FormState> {
     required SaveFormUseCase saveFormUseCase,
   }) : _getFormUseCase = getFormUseCase,
        _saveFormUseCase = saveFormUseCase,
-       super(FormState(form: FormEntity.empty()));
+       super(FormState(form: FormModel.empty()));
 
   Future<void> getForm(String formId) async {
     emit(state.copyWith(isLoading: true));
@@ -28,7 +28,7 @@ class FormCubit extends Cubit<FormState> {
     }
   }
 
-  Future<void> saveForm(FormEntity form) async {
+  Future<void> saveForm(FormModel form) async {
     emit(state.copyWith(isLoading: true));
     try {
       await _saveFormUseCase.execute(form);
