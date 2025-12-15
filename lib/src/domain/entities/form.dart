@@ -1,9 +1,9 @@
 import '../../core/core.dart';
 
-class Form extends Equatable {
-  const Form({required this.id, required this.name});
+class FormEntity extends Equatable {
+  const FormEntity({required this.id, required this.name});
 
-  factory Form.empty() => const Form(id: '', name: '');
+  factory FormEntity.empty() => const FormEntity(id: '', name: '');
 
   final String id;
   final String name;

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+import '../../domain/domain.dart';
 import 'form_provider.dart';
 import '../../core/core.dart';
 
@@ -8,9 +9,10 @@ class ApiFormProvider implements FormProvider {
   final Dio dio;
 
   @override
-  Future<void> getForms() async {
+  Future<List<FormEntity>> getForms() async {
     try {
       final response = await dio.get(ApiConstants.forms);
+      return response.data;
     } on DioException catch (e) {
       _handleDioException(e);
     } catch (e) {
@@ -22,11 +24,12 @@ class ApiFormProvider implements FormProvider {
   }
 
   @override
-  Future<void> getForm(String formId) async {
+  Future<FormEntity> getForm(String formId) async {
     try {
       final response = await dio.get(
         ApiConstants.form.replaceFirst('{formId}', formId),
       );
+      return response.data;
     } on DioException catch (e) {
       _handleDioException(e);
     } catch (e) {
@@ -37,7 +40,7 @@ class ApiFormProvider implements FormProvider {
     }
   }
 
-  void _handleDioException(DioException e) {
+  Never _handleDioException(DioException e) {
     if (e.response?.statusCode == 401) {
       throw AuthorizationException(
         'Jwt token expired or invalid',

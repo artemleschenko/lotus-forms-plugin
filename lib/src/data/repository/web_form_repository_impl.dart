@@ -8,12 +8,17 @@ class WebFormRepositoryImpl implements FormRepository {
   final FormProvider formProvider;
 
   @override
-  Future<void> getForms() async {
+  Future<List<FormEntity>> getForms() async {
     return formProvider.getForms();
   }
 
   @override
-  Future<void> getForm(String formId) async {
+  Future<FormEntity> getForm(String formId) async {
     return formProvider.getForm(formId);
+  }
+
+  @override
+  Future<void> saveForm(FormEntity form) async {
+    throw UnimplementedError();
   }
 }

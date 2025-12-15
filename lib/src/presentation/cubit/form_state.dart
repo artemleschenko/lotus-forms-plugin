@@ -7,11 +7,11 @@ class FormState extends Equatable {
     this.error = '',
   });
 
-  final Form form;
+  final FormEntity form;
   final bool isLoading;
   final String error;
 
-  FormState copyWith({Form? form, bool? isLoading, String? error}) {
+  FormState copyWith({FormEntity? form, bool? isLoading, String? error}) {
     return FormState(
       form: form ?? this.form,
       isLoading: isLoading ?? this.isLoading,

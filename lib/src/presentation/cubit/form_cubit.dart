@@ -14,26 +14,26 @@ class FormCubit extends Cubit<FormState> {
     required SaveFormUseCase saveFormUseCase,
   }) : _getFormUseCase = getFormUseCase,
        _saveFormUseCase = saveFormUseCase,
-       super(FormState(form: Form.empty()));
+       super(FormState(form: FormEntity.empty()));
 
   Future<void> getForm(String formId) async {
     emit(state.copyWith(isLoading: true));
     try {
       final form = await _getFormUseCase.execute(formId);
       emit(state.copyWith(form: form, isLoading: false));
-    } on AppException catch (e) {
+    } on PackageException catch (e) {
       emit(state.copyWith(error: e.message, isLoading: false));
     } catch (e) {
       emit(state.copyWith(error: 'Something went wrong', isLoading: false));
     }
   }
 
-  Future<void> saveForm(Form form) async {
+  Future<void> saveForm(FormEntity form) async {
     emit(state.copyWith(isLoading: true));
     try {
       await _saveFormUseCase.execute(form);
       emit(state.copyWith(isLoading: false));
-    } on AppException catch (e) {
+    } on PackageException catch (e) {
       emit(state.copyWith(error: e.message, isLoading: false));
     } catch (e) {
       emit(state.copyWith(error: 'Something went wrong', isLoading: false));

@@ -1,4 +1,6 @@
+import '../../domain/domain.dart';
+
 abstract interface class FormProvider {
-  Future<void> getForms();
-  Future<void> getForm(String formId);
+  Future<List<FormEntity>> getForms();
+  Future<FormEntity> getForm(String formId);
 }
