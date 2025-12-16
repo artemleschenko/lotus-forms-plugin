@@ -9,4 +9,6 @@ class ApiConstants {
   static const String forms = '/forms';
   static const String form = '/forms/{formId}';
   //endregion
+
+  static const String databaseName = 'forms.db';
 }

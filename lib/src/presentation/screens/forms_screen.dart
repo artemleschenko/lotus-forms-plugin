@@ -15,7 +15,7 @@ class FormsScreen extends StatelessWidget {
         getFormUseCase: AppDI.getInstance(),
         saveFormUseCase: AppDI.getInstance(),
       ),
-      child: FormsBody(),
+      child: const FormsBody(),
     );
   }
 }
