@@ -12,7 +12,9 @@ class ApiFormProvider implements FormProvider {
   Future<List<FormEntity>> getForms() async {
     try {
       final response = await dio.get(ApiConstants.forms);
-      return response.data;
+      return (response.data as List)
+          .map((e) => FormEntity.fromJson(e))
+          .toList();
     } on DioException catch (e) {
       _handleDioException(e);
     } catch (e) {
@@ -29,7 +31,7 @@ class ApiFormProvider implements FormProvider {
       final response = await dio.get(
         ApiConstants.form.replaceFirst('{formId}', formId),
       );
-      return response.data;
+      return FormEntity.fromJson(response.data);
     } on DioException catch (e) {
       _handleDioException(e);
     } catch (e) {
@@ -45,9 +47,9 @@ class ApiFormProvider implements FormProvider {
     try {
       final response = await dio.post(
         ApiConstants.form.replaceFirst('{formId}', form.id),
-        data: form,
+        data: form.toJson(),
       );
-      return response.data;
+      return FormEntity.fromJson(response.data);
     } on DioException catch (e) {
       _handleDioException(e);
     } catch (e) {
