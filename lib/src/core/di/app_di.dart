@@ -53,7 +53,10 @@ class AppDI {
             ? WebFormRepositoryImpl(
                 formProvider: _packageLocator<ApiFormProvider>(),
               )
-            : MobileFormRepositoryImpl(),
+            : MobileFormRepositoryImpl(
+                formProvider: _packageLocator<ApiFormProvider>(),
+                database: _packageLocator<Database>(),
+              ),
       )
       ..registerLazySingleton<OfflineRepository>(
         () => OfflineRepositoryImpl(_packageLocator.get<Database>()),
