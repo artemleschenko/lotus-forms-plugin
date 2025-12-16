@@ -3,7 +3,8 @@ import 'package:lotus_forms_package/src/domain/domain.dart';
 
 class FormMapper {
   static FormModel transformToModel(FormEntity entity) {
-    return FormModel(id: entity.id, name: entity.name);
+    // FIXME: implement transformToModel method
+    return FormModel(id: entity.id, name: entity.name, elementForms: []);
   }
 
   static List<FormModel> transformToModelList(List<FormEntity> entities) {

@@ -1,7 +1,6 @@
 import 'package:lotus_forms_package/src/data/mappers/form_mapper.dart';
 import 'package:lotus_forms_package/src/domain/domain.dart';
 
-import '../data.dart';
 import '../providers/providers.dart';
 
 class WebFormRepositoryImpl implements FormRepository {
@@ -11,8 +10,8 @@ class WebFormRepositoryImpl implements FormRepository {
 
   @override
   Future<List<FormModel>> getForms() async {
-   final result = await formProvider.getForms();
-   return result.map((e) => FormMapper.transformToModel(e)).toList();
+    final result = await formProvider.getForms();
+    return result.map((e) => FormMapper.transformToModel(e)).toList();
   }
 
   @override
@@ -23,6 +22,6 @@ class WebFormRepositoryImpl implements FormRepository {
 
   @override
   Future<void> saveForm(FormModel form) async {
-    throw UnimplementedError();
+    await formProvider.saveForm(FormMapper.transformToEntity(form));
   }
 }

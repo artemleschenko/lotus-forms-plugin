@@ -1,13 +1,43 @@
-import 'package:lotus_forms_package/src/core/core.dart';
+enum FieldType { text, dropdown, file, unknown }
 
-class FormModel extends Equatable {
-  const FormModel({required this.id, required this.name});
+class FormOption {
+  final String value;
+  final String displayText;
 
-  factory FormModel.empty() => const FormModel(id: '', name: '');
+  const FormOption({required this.value, required this.displayText});
+}
 
+class FormElementConfig {
+  final String? placeholder;
+  final List<FormOption> options;
+
+  const FormElementConfig({this.placeholder, this.options = const []});
+}
+
+class FormElementEntity {
+  final String id;
+  final FieldType type;
+  final String header;
+  final bool isRequired;
+  final FormElementConfig config;
+
+  const FormElementEntity({
+    required this.id,
+    required this.type,
+    required this.header,
+    this.isRequired = false,
+    required this.config,
+  });
+}
+
+class FormModel {
   final String id;
   final String name;
+  final List<FormElementEntity> elementForms;
 
-  @override
-  List<Object?> get props => [id, name];
+  const FormModel({
+    required this.id,
+    required this.name,
+    required this.elementForms,
+  });
 }

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lotus_forms_package/src/data/data.dart';
 import 'package:lotus_forms_package/src/data/providers/database/database_impl.dart';
@@ -39,26 +40,30 @@ class AppDI {
       )
       ..registerLazySingleton<Database>(
         () => DatabaseImpl(
-          dbName: 'forms.db',
+          dbName: ApiConstants.databaseName,
           inMemory: false,
           logStatements: true,
         ),
       )
-      ..registerLazySingleton(() => ApiFormProvider(dio: _packageLocator()))
       ..registerLazySingleton(
-        () => WebFormRepositoryImpl(
-          formProvider: _packageLocator<ApiFormProvider>(),
-        ),
+        () => ApiFormProvider(dio: _packageLocator<Dio>()),
+      )
+      ..registerLazySingleton<FormRepository>(
+        () => kIsWeb
+            ? WebFormRepositoryImpl(
+                formProvider: _packageLocator<ApiFormProvider>(),
+              )
+            : MobileFormRepositoryImpl(),
       )
       ..registerLazySingleton<OfflineRepository>(
         () => OfflineRepositoryImpl(_packageLocator.get<Database>()),
       )
       // Usecase region
       ..registerLazySingleton(
-        () => GetFormUseCase(_packageLocator<WebFormRepositoryImpl>()),
+        () => GetFormUseCase(_packageLocator<FormRepository>()),
       )
       ..registerLazySingleton(
-        () => SaveFormUseCase(_packageLocator<WebFormRepositoryImpl>()),
+        () => SaveFormUseCase(_packageLocator<FormRepository>()),
       )
       ..registerFactory<SynchronizeUseCase>(
         () => SynchronizeUseCase(
