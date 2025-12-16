@@ -23,7 +23,7 @@ class SynchronizeUseCase {
 
     for (final form in pendingForms) {
       try {
-        //await _remoteRepo.sendForm(form);
+        await _remoteRepo.saveForm(form);
 
         await _offlineRepo.deleteForm(form.id);
       } catch (e) {
