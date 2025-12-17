@@ -6,6 +6,7 @@ import 'package:lotus_forms_package/src/data/providers/database/database_impl.da
 import 'package:lotus_forms_package/src/domain/domain.dart';
 import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
 import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
+import 'package:lotus_forms_package/src/core/network/network_info.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 import '../../data/providers/providers.dart';
@@ -48,6 +49,7 @@ class AppDI {
       ..registerLazySingleton(
         () => ApiFormProvider(dio: _packageLocator<Dio>()),
       )
+      ..registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl())
       ..registerLazySingleton<FormRepository>(
         () => kIsWeb
             ? WebFormRepositoryImpl(
@@ -56,6 +58,7 @@ class AppDI {
             : MobileFormRepositoryImpl(
                 formProvider: _packageLocator<ApiFormProvider>(),
                 database: _packageLocator<Database>(),
+                networkInfo: _packageLocator<NetworkInfo>(),
               ),
       )
       ..registerLazySingleton<OfflineRepository>(

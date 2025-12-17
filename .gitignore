@@ -3,3 +3,5 @@ pubspec.lock
 .flutter-plugins-dependencies
 *.g.dart
 analysis_options.yaml
+build/
+coverage/lcov.info
