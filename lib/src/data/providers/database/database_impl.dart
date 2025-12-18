@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:lotus_forms_package/src/data/data.dart';
-import 'connection.dart' as impl;
+import 'connections/connection.dart' as impl;
 
 part 'database_impl.g.dart';
 

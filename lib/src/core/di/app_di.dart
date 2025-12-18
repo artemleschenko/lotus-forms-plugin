@@ -9,7 +9,6 @@ import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 import 'package:lotus_forms_package/src/core/network/network_info.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
-import '../../data/providers/providers.dart';
 import '../core.dart';
 
 final GetIt _packageLocator = GetIt.asNewInstance();
@@ -20,6 +19,16 @@ class AppDI {
   static void init({required String token}) {
     if (_isInitialized) {
       return;
+    }
+
+    if (!kIsWeb) {
+      _packageLocator.registerLazySingleton<Database>(
+        () => DatabaseImpl(
+          dbName: ApiConstants.databaseName,
+          inMemory: false,
+          logStatements: true,
+        ),
+      );
     }
 
     _packageLocator
@@ -38,13 +47,6 @@ class AppDI {
               ),
             ),
           ),
-      )
-      ..registerLazySingleton<Database>(
-        () => DatabaseImpl(
-          dbName: ApiConstants.databaseName,
-          inMemory: false,
-          logStatements: true,
-        ),
       )
       ..registerLazySingleton(
         () => ApiFormProvider(dio: _packageLocator<Dio>()),

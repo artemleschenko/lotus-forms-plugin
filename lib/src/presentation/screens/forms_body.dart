@@ -57,6 +57,16 @@ class _FormsBodyState extends State<FormsBody> {
                 controller: _controller,
                 validator: FormValidators.signature,
               ),
+              AppFileUploadField(
+                title: "File",
+                isRequired: true,
+                validator: FormValidators.file,
+              ),
+              AppUploadImageField(
+                title: "Image",
+                isRequired: true,
+                validator: FormValidators.image,
+              ),
               SubmitButton(
                 submitText: 'Submit Form',
                 onSubmit: onSubmit,

@@ -1,3 +1,6 @@
+import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
+
 class FormValidators {
   static String? requiredField(String? value) =>
       (value == null || value.isEmpty) ? 'This field is required' : null;
@@ -21,4 +24,10 @@ class FormValidators {
 
   static String? date(DateTime? value) =>
       (value?.isAfter(DateTime.now()) ?? true) ? 'Date is not valid' : null;
+
+  static String? file(PlatformFile? value) =>
+      (value == null) ? 'File is required' : null;
+
+  static String? image(XFile? value) =>
+      (value == null) ? 'Image is required' : null;
 }
