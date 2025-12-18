@@ -1,126 +1,71 @@
-import 'package:flutter/material.dart' hide FormState;
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lotus_forms_package/src/presentation/widgets/form_information_scope.dart';
+import 'package:flutter/material.dart';
 
-import '../../domain/domain.dart';
-import '../cubit/form_cubit.dart';
-import '../cubit/form_state.dart';
+import '../../core/core.dart';
+import '../../core_ui/core_ui.dart';
 
-class FormsBody extends StatelessWidget {
+class FormsBody extends StatefulWidget {
   const FormsBody({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final formInformation = FormInformationScope.of(context);
+  State<FormsBody> createState() => _FormsBodyState();
+}
 
-    return SizedBox(
-      child: BlocConsumer<FormCubit, FormState>(
-        listener: (context, state) {
-          if (state.status == FormStatus.failure && state.error != null) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.error!)));
-          }
-        },
-        builder: (context, state) {
-          if (state.status == FormStatus.loading && state.schema == null) {
-            return const Center(child: CircularProgressIndicator());
-          }
+class _FormsBodyState extends State<FormsBody> {
+  final SignatureController _controller = SignatureController();
+  final _formKey = GlobalKey<FormState>();
 
-          if (state.schema == null) return const SizedBox();
-
-          return ListView.separated(
-            padding: const EdgeInsets.all(16),
-            itemCount: state.schema!.elementForms.length + 1,
-            separatorBuilder: (_, __) => const SizedBox(height: 16),
-            itemBuilder: (context, index) {
-              if (index == state.schema!.elementForms.length) {
-                return ElevatedButton(
-                  onPressed: () =>
-                      context.read<FormCubit>().getForm(formInformation.id),
-                  child: state.status == FormStatus.loading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Text("Отправить"),
-                );
-              }
-
-              final field = state.schema!.elementForms[index];
-              final currentValue = state.values[field.id];
-
-              return _buildFieldWidget(context, field, currentValue);
-            },
-          );
-        },
-      ),
-    );
+  void onSubmit() {
+    if (_formKey.currentState!.validate()) {
+      // TODO: implement onSubmit
+    }
   }
 
-  Widget _buildFieldWidget(
-    BuildContext context,
-    FormElementEntity field,
-    dynamic currentValue,
-  ) {
-    switch (field.type) {
-      case FieldType.text:
-        return TextFormField(
-          initialValue: currentValue as String?,
-          decoration: InputDecoration(
-            labelText: field.header,
-            hintText: field.config.placeholder,
-            border: const OutlineInputBorder(),
-          ),
-          onChanged: (value) {
-            // context.read<FormCubit>().fieldChanged(field.id, value);
-          },
-        );
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
-      case FieldType.dropdown:
-        return DropdownButtonFormField<String>(
-          initialValue: currentValue as String?,
-          decoration: InputDecoration(
-            labelText: field.header,
-            border: const OutlineInputBorder(),
-          ),
-          items: field.config.options.map((opt) {
-            return DropdownMenuItem(
-              value: opt.value,
-              child: Text(opt.displayText),
-            );
-          }).toList(),
-          onChanged: (value) {
-            // context.read<FormCubit>().fieldChanged(field.id, value);
-          },
-        );
-
-      case FieldType.file:
-        return Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(4),
-          ),
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: AppColors.of(context).primaryBg,
+      child: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(AppDimens.MARGIN_16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: AppDimens.MARGIN_16,
             children: [
-              Text(field.header, style: Theme.of(context).textTheme.bodyLarge),
-              const SizedBox(height: 8),
-              ElevatedButton.icon(
-                onPressed: () {
-                  // Implement file picker logic
-                },
-                icon: const Icon(Icons.upload_file),
-                label: const Text("Выбрать файл"),
+              AppDateTimeField(
+                title: "Date",
+                type: AppDateTimeFieldType.date,
+                isRequired: true,
+                hint: 'Date of birth',
+                validator: FormValidators.date,
+                onChanged: (DateTime value) {},
+              ),
+              AppTextField(
+                title: "Email",
+                hint: 'example@gmail.com',
+                isRequired: true,
+                validator: FormValidators.email,
+              ),
+              AppSignatureField(
+                title: "Signature",
+                isRequired: true,
+                controller: _controller,
+                validator: FormValidators.signature,
+              ),
+              SubmitButton(
+                submitText: 'Submit Form',
+                onSubmit: onSubmit,
+                isActive: true,
               ),
             ],
           ),
-        );
-
-      default:
-        return Text("Неизвестный тип поля: ${field.type}");
-    }
+        ),
+      ),
+    );
   }
 }
