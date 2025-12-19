@@ -11,7 +11,7 @@ class AppFileUploadField extends FormField<PlatformFile> {
   final bool isDisabled;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
-  final ValueChanged<PlatformFile>? onFileSelected;
+  final ValueChanged<PlatformFile?>? onFileSelected;
 
   AppFileUploadField({
     super.key,
@@ -31,7 +31,25 @@ class AppFileUploadField extends FormField<PlatformFile> {
 
            Future<void> pickFile() async {
              final FilePickerResult? result = await FilePicker.platform
-                 .pickFiles();
+                 .pickFiles(
+                   type: FileType.custom,
+                   allowedExtensions: [
+                     'jpeg',
+                     'jpg',
+                     'png',
+                     'gif',
+                     'heic',
+                     'mp4',
+                     'mov',
+                     'avi',
+                     'pdf',
+                     'doc',
+                     'docx',
+                     'xls',
+                     'xlsx',
+                     'csv',
+                   ],
+                 );
 
              if (result != null) {
                final PlatformFile file = result.files.single;
@@ -81,7 +99,19 @@ class AppFileUploadField extends FormField<PlatformFile> {
                          overflow: TextOverflow.ellipsis,
                        ),
                      ),
-                     if (suffixIcon != null) ...<Widget>[
+                     if (state.value != null && !isDisabled)
+                       InkWell(
+                         onTap: () {
+                           state.didChange(null);
+                           onFileSelected?.call(null);
+                         },
+                         child: Icon(
+                           Icons.close,
+                           color: colors.grey500,
+                           size: 20,
+                         ),
+                       )
+                     else if (suffixIcon != null) ...<Widget>[
                        const SizedBox(width: AppDimens.padding8),
                        suffixIcon,
                      ] else
