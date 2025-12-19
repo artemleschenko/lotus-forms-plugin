@@ -1,9 +1,14 @@
+import 'package:lotus_forms_package/src/domain/domain.dart';
+
 import '../use_cases/use_case.dart';
 
-class GetFormUseCase implements UseCase {
+class GetFormUseCase implements FutureUseCase<String, FormModel> {
+  const GetFormUseCase(FormRepository formRepository)
+    : _formRepository = formRepository;
+  final FormRepository _formRepository;
+
   @override
-  execute(input) {
-    // TODO: implement execute
-    throw UnimplementedError();
+  Future<FormModel> execute(String input) {
+    return _formRepository.getForm(input);
   }
 }

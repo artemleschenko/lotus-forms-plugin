@@ -5,3 +5,4 @@ pubspec.lock
 analysis_options.yaml
 build/
 coverage/lcov.info
+.DS_Store
