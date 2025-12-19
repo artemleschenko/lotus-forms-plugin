@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS [forms] (
+    [id] TEXT PRIMARY KEY NOT NULL,
+    [name] TEXT NOT NULL
+);
+
+_getForms:
+    SELECT * FROM [forms];
+
+_insertForm:
+    INSERT INTO [forms] (id, name) 
+    VALUES (:id, :name);
+
+_hasForms:
+    SELECT EXISTS(SELECT 1 FROM [forms]);
+
+_deleteForm:
+    DELETE FROM [forms] WHERE id = :id;

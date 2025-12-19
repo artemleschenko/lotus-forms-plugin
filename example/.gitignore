@@ -32,7 +32,8 @@ migrate_working_dir/
 .pub/
 /build/
 /coverage/
-
+macos/
+**/ios/Flutter
 # Symbolication related
 app.*.symbols
 
@@ -43,5 +44,5 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-/ios
 /macos
+/ios
