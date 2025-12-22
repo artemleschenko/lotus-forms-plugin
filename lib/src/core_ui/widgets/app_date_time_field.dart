@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -133,30 +134,100 @@ class AppDateTimeField extends StatelessWidget {
     BuildContext context,
     FormFieldState<DateTime> state,
   ) async {
-    DateTime selected = state.value ?? initialDate ?? DateTime.now();
-    await showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: 216,
-          padding: const EdgeInsets.only(top: 6.0),
-          color: CupertinoColors.systemBackground.resolveFrom(context),
-          child: SafeArea(
-            top: false,
-            child: CupertinoDatePicker(
-              initialDateTime: selected,
-              minimumDate: minimumDate,
-              maximumDate: maximumDate,
-              mode: type == AppDateTimeFieldType.date
-                  ? CupertinoDatePickerMode.date
-                  : CupertinoDatePickerMode.time,
-              onDateTimeChanged: (DateTime value) => selected = value,
+    final isCupertino =
+        !kIsWeb && Theme.of(context).platform == TargetPlatform.iOS;
+    final DateTime initial = state.value ?? initialDate ?? DateTime.now();
+    final colors = AppColors.of(context);
+
+    if (isCupertino) {
+      // IOS
+      DateTime selected = initial;
+      await showCupertinoModalPopup<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 216,
+            padding: const EdgeInsets.only(top: 6.0),
+            color: CupertinoColors.systemBackground.resolveFrom(context),
+            child: SafeArea(
+              top: false,
+              child: CupertinoDatePicker(
+                initialDateTime: selected,
+                minimumDate: minimumDate,
+                maximumDate: maximumDate,
+                mode: type == AppDateTimeFieldType.date
+                    ? CupertinoDatePickerMode.date
+                    : CupertinoDatePickerMode.time,
+                onDateTimeChanged: (DateTime value) => selected = value,
+              ),
+            ),
+          );
+        },
+      );
+      state.didChange(selected);
+      onChanged.call(selected);
+    } else {
+      // Android, Desktop, Web
+      Widget themeBuilder(BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: colors.secondary400base,
+              onPrimary: colors.white,
+              onSurface: colors.black,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: colors.secondary400base,
+              ),
+            ),
+            datePickerTheme: DatePickerThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppDimens.radius10),
+              ),
+              dividerColor: colors.grey100,
+            ),
+            timePickerTheme: TimePickerThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppDimens.radius10),
+              ),
             ),
           ),
+          child: child!,
         );
-      },
-    );
-    state.didChange(selected);
-    onChanged.call(selected);
+      }
+
+      if (type == AppDateTimeFieldType.date) {
+        final DateTime? picked = await showDatePicker(
+          context: context,
+          initialDate: initial,
+          firstDate: minimumDate ?? DateTime(1900),
+          lastDate: maximumDate ?? DateTime(2100),
+          builder: themeBuilder,
+        );
+        if (picked != null) {
+          state.didChange(picked);
+          onChanged.call(picked);
+        }
+      } else {
+        final TimeOfDay? picked = await showTimePicker(
+          context: context,
+          initialTime: TimeOfDay.fromDateTime(initial),
+          builder: themeBuilder,
+        );
+        if (picked != null) {
+          final now = DateTime.now();
+          final result = DateTime(
+            now.year,
+            now.month,
+            now.day,
+            picked.hour,
+            picked.minute,
+          );
+          state.didChange(result);
+          onChanged.call(result);
+        }
+      }
+    }
   }
 }
