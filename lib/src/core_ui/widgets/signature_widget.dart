@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lotus_forms_package/src/core_ui/theme/theme.dart';
+import 'package:lotus_forms_package/src/core_ui/widgets/eager_pan_gesture_recognizer.dart';
 import 'package:lotus_forms_package/src/presentation/widgets/form_field_wrapper.dart';
 
 class SignatureController extends ChangeNotifier {
@@ -94,12 +95,23 @@ class _SignatureDrawingArea extends StatelessWidget {
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) {
-        return GestureDetector(
-          onPanStart: (details) => _addPoint(context, details.globalPosition),
-          onPanUpdate: (details) => _addPoint(context, details.globalPosition),
-          onPanEnd: (_) {
-            controller.addPoint(null);
-            onChanged();
+        return RawGestureDetector(
+          behavior: HitTestBehavior.opaque,
+          gestures: {
+            EagerPanGestureRecognizer:
+                GestureRecognizerFactoryWithHandlers<EagerPanGestureRecognizer>(
+                  () => EagerPanGestureRecognizer(),
+                  (EagerPanGestureRecognizer instance) {
+                    instance.onStart = (details) =>
+                        _addPoint(context, details.globalPosition);
+                    instance.onUpdate = (details) =>
+                        _addPoint(context, details.globalPosition);
+                    instance.onEnd = (_) {
+                      controller.addPoint(null);
+                      onChanged();
+                    };
+                  },
+                ),
           },
           child: RepaintBoundary(
             child: CustomPaint(

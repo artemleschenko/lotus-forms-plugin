@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: DynamicForms(
           formId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
