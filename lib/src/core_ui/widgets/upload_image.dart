@@ -71,7 +71,7 @@ class AppUploadImageField extends FormField<XFile> {
                      child: GestureDetector(
                        onTap: () {
                          state.didChange(null);
-                         onImageSрщеelected?.call(null);
+                         onImageSelected?.call(null);
                        },
                        child: Container(
                          decoration: BoxDecoration(
