@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:lotus_forms_package/src/core/constants/constants.dart';
 import 'package:lotus_forms_package/src/presentation/widgets/form_field_wrapper.dart';
 
 import '../core_ui.dart';
@@ -33,22 +34,7 @@ class AppFileUploadField extends FormField<PlatformFile> {
              final FilePickerResult? result = await FilePicker.platform
                  .pickFiles(
                    type: FileType.custom,
-                   allowedExtensions: [
-                     'jpeg',
-                     'jpg',
-                     'png',
-                     'gif',
-                     'heic',
-                     'mp4',
-                     'mov',
-                     'avi',
-                     'pdf',
-                     'doc',
-                     'docx',
-                     'xls',
-                     'xlsx',
-                     'csv',
-                   ],
+                   allowedExtensions: AppConstants.allowedExtensions,
                  );
 
              if (result != null) {

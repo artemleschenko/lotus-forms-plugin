@@ -71,18 +71,18 @@ class AppUploadImageField extends FormField<XFile> {
                      child: GestureDetector(
                        onTap: () {
                          state.didChange(null);
-                         onImageSelected?.call(null);
+                         onImageSрщеelected?.call(null);
                        },
                        child: Container(
                          decoration: BoxDecoration(
-                           color: Colors.white.withOpacity(0.5),
+                           color: colors.white.withOpacity(0.5),
                            shape: BoxShape.circle,
                          ),
                          padding: const EdgeInsets.all(4),
-                         child: const Icon(
+                         child: Icon(
                            Icons.close,
                            size: 20,
-                           color: Colors.black,
+                           color: colors.black,
                          ),
                        ),
                      ),
