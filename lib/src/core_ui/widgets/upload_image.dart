@@ -15,7 +15,7 @@ class AppUploadImageField extends FormField<XFile> {
   final double height;
   final double width;
   final Widget? placeholderImage;
-  final ValueChanged<XFile>? onImageSelected;
+  final ValueChanged<XFile?>? onImageSelected;
 
   AppUploadImageField({
     super.key,
@@ -48,19 +48,47 @@ class AppUploadImageField extends FormField<XFile> {
 
            Widget content;
            if (state.value != null) {
-             content = kIsWeb
-                 ? Image.network(
-                     state.value!.path,
-                     fit: BoxFit.cover,
-                     width: double.infinity,
-                     height: double.infinity,
-                   )
-                 : Image.file(
-                     File(state.value!.path),
-                     fit: BoxFit.cover,
-                     width: double.infinity,
-                     height: double.infinity,
-                   );
+             content = Stack(
+               fit: StackFit.expand,
+               children: [
+                 kIsWeb
+                     ? Image.network(
+                         state.value!.path,
+                         fit: BoxFit.cover,
+                         width: double.infinity,
+                         height: double.infinity,
+                       )
+                     : Image.file(
+                         File(state.value!.path),
+                         fit: BoxFit.cover,
+                         width: double.infinity,
+                         height: double.infinity,
+                       ),
+                 if (!isDisabled)
+                   Positioned(
+                     top: 8,
+                     right: 8,
+                     child: GestureDetector(
+                       onTap: () {
+                         state.didChange(null);
+                         onImageSelected?.call(null);
+                       },
+                       child: Container(
+                         decoration: BoxDecoration(
+                           color: colors.white.withOpacity(0.5),
+                           shape: BoxShape.circle,
+                         ),
+                         padding: const EdgeInsets.all(4),
+                         child: Icon(
+                           Icons.close,
+                           size: 20,
+                           color: colors.black,
+                         ),
+                       ),
+                     ),
+                   ),
+               ],
+             );
            } else if (placeholderImage != null) {
              content = placeholderImage;
            } else {

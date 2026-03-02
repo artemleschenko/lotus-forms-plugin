@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:lotus_forms_package/src/core/constants/constants.dart';
 import 'package:lotus_forms_package/src/presentation/widgets/form_field_wrapper.dart';
 
 import '../core_ui.dart';
@@ -11,7 +12,7 @@ class AppFileUploadField extends FormField<PlatformFile> {
   final bool isDisabled;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
-  final ValueChanged<PlatformFile>? onFileSelected;
+  final ValueChanged<PlatformFile?>? onFileSelected;
 
   AppFileUploadField({
     super.key,
@@ -31,7 +32,10 @@ class AppFileUploadField extends FormField<PlatformFile> {
 
            Future<void> pickFile() async {
              final FilePickerResult? result = await FilePicker.platform
-                 .pickFiles();
+                 .pickFiles(
+                   type: FileType.custom,
+                   allowedExtensions: AppConstants.allowedExtensions,
+                 );
 
              if (result != null) {
                final PlatformFile file = result.files.single;
@@ -81,7 +85,19 @@ class AppFileUploadField extends FormField<PlatformFile> {
                          overflow: TextOverflow.ellipsis,
                        ),
                      ),
-                     if (suffixIcon != null) ...<Widget>[
+                     if (state.value != null && !isDisabled)
+                       InkWell(
+                         onTap: () {
+                           state.didChange(null);
+                           onFileSelected?.call(null);
+                         },
+                         child: Icon(
+                           Icons.close,
+                           color: colors.grey500,
+                           size: 20,
+                         ),
+                       )
+                     else if (suffixIcon != null) ...<Widget>[
                        const SizedBox(width: AppDimens.padding8),
                        suffixIcon,
                      ] else
